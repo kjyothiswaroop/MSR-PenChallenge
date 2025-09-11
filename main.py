@@ -3,8 +3,9 @@
 import cv2
 import pyrealsense2 as rs
 import numpy as np
-import align
+import pipeline
 import argparse
+import streamer
 
 def main():
     parser = argparse.ArgumentParser(description="Aligned Image streamer")
@@ -15,8 +16,12 @@ def main():
 
     args = parser.parse_args()
 
-    with align.AlignImages(mode=args.mode,file_name=args.filename,clipping_distance=5) as img:
-        img.streamLoop()
+
+    with pipeline.pipeLineManager(mode=args.mode,file_name=args.filename) as pm:
+        streamerObj = streamer.Streamer(pm,clipping_distance=4)
+        streamerObj.stream()
+
+        
 
 if __name__ == "__main__":
     main()
