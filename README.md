@@ -10,4 +10,4 @@ A PincherX robot arm and a realsense camera are provided. The tasks are as follo
 
 ### Demos
 Below is the demo of the video stream processing and locating the center of the pen
-![Video](videos/centriod.mp4)
+![Video](videos/centroid.mp4)
