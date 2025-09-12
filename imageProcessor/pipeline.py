@@ -58,11 +58,11 @@ class pipeLineManager:
 
         frames = self.pipeline.wait_for_frames()
 
-        if self.mode == "playback":
-            current_position = self.playback_device.get_position()
-            total_duration = self.playback_device.get_duration().total_seconds() * 1e9  # Convert to nanoseconds
-            if current_position >= total_duration:
-                print("Playback finished")
-                return None
+        # if self.mode == "playback":
+        #     current_position = self.playback_device.get_position()
+        #     total_duration = self.playback_device.get_duration().total_seconds() * 1e9  # Convert to nanoseconds
+        #     if current_position >= total_duration:
+        #         print("Playback finished")
+        #         return None
             
         return frames

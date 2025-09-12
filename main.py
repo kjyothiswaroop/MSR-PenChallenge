@@ -3,9 +3,10 @@
 import cv2
 import pyrealsense2 as rs
 import numpy as np
-import pipeline
+import imageProcessor.pipeline as pipeline
 import argparse
-import streamer
+import imageProcessor.streamer as streamer
+import tools.toolbar as toolbar
 
 def main():
     parser = argparse.ArgumentParser(description="Aligned Image streamer")
@@ -16,12 +17,20 @@ def main():
 
     args = parser.parse_args()
 
+    windowName = "Realsense Stream"
+    cv2.namedWindow(windowName)
+    cv2.waitKey(1)
 
+    tools = toolbar.toolBar(windowName)
+    
     with pipeline.pipeLineManager(mode=args.mode,file_name=args.filename) as pm:
-        streamerObj = streamer.Streamer(pm,clipping_distance=4)
+        streamerObj = streamer.Streamer(pm,tools)
         streamerObj.stream()
+        centroid = streamerObj.getCentroid()
 
-        
+        print(centroid)
+        print(streamerObj.get3Dcords(centroid))
+
 
 if __name__ == "__main__":
     main()
