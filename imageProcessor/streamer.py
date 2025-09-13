@@ -2,6 +2,7 @@ import cv2
 import pyrealsense2 as rs
 import numpy as np
 import imageProcessor.pipeline as pipeline
+import tools
 
 class Streamer:
 
@@ -10,7 +11,10 @@ class Streamer:
        self.profile = pm.profile
        self.pm = pm
        self.tools = tools
-       self.centroids = []
+       self.centroid = (0,0)
+       self.X = 0
+       self.Y = 0
+       self.Z = 0
 
        depth_sensor = self.profile.get_device().first_depth_sensor()
        self.depth_scale = depth_sensor.get_depth_scale()
@@ -51,12 +55,14 @@ class Streamer:
                 # Draw contour and centroid
                 cv2.drawContours(converted_img, [contour], -1, (0, 255, 0), 2)
                 cv2.circle(converted_img, center, 5, (0, 0, 255), -1)
-                #cv2.putText(converted_img, f"({c_x}, {c_y})", (c_x + 10, c_y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-                self.centroids.append((c_x,c_y))
-                if self.get3Dcords((c_x,c_y)):
-                    X,Y,Z = self.get3Dcords((c_x,c_y))
-                    cv2.putText(converted_img, f"({X}, {Y},{Z})", (c_x + 10, c_y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-        
+                
+                self.centroid = (c_x,c_y)
+                if self.get3Dcords():
+                    self.X,self.Y,self.Z = self.get3Dcords()
+
+                    cv2.putText(converted_img, f"({self.X}, {self.Y},{self.Z})", (c_x + 10, c_y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        else :
+            self.X , self.Y , self.Z = (0,0,0)
 
                 
         # depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
@@ -98,44 +104,23 @@ class Streamer:
     def stream(self):
 
         while True:
-
-            frameset = self.pm.getFrames()
-            if frameset is None:
-                break
-
-            self.clipping_distance = self.tools.get_value("Clipping_Distance") / self.depth_scale
-
-            depth_frame,color_frame = self.get_depth_and_color(frameset)
-            processed_image = self.process_frame(depth_frame,color_frame)
-
-            cv2.imshow("Realsense Stream", processed_image)
-
-            key = cv2.waitKey(1)
-            if key & 0xFF == ord('q') or key == 27:
-                break
+            if self.procImage() is not None: 
+                cv2.imshow("Realsense Stream", self.procImage())
+                key = cv2.waitKey(1)
+                if key & 0xFF == ord('q') or key == 27:
+                    break
 
         cv2.destroyAllWindows()
     
     def getCentroid(self):
-
-        centroid_x = 0
-        centroid_y = 0
-        if self.centroids:
-            for centroid in self.centroids:
-                centroid_x += centroid[0]
-                centroid_y += centroid[1]
-
-            mean_cx,mean_cy = int(centroid_x/len(self.centroids)) , int(centroid_y/len(self.centroids))
-
-            return (mean_cx,mean_cy)
-        
+        return self.centroid
     
-    def get3Dcords(self,centroid):
+    def get3Dcords(self):
 
-        if centroid is None:
+        if self.centroid is None:
             return None
         
-        x , y = centroid
+        x , y = self.centroid
         Z = self.aligned_depth_frame.get_distance(x,y)
 
         if Z == 0:
@@ -147,4 +132,17 @@ class Streamer:
         X,Y,Z = rs.rs2_deproject_pixel_to_point(intrinsic, [x,y], Z)
 
         return (X,Y,Z)
+
+    def getValid3Dcords(self):
+        return (self.X,self.Y,self.Z)
+    
+    def procImage(self):
+
+        frameset = self.pm.getFrames()
+        if frameset is None:
+            return None
+        self.clipping_distance = self.tools.get_value("Clipping_Distance") / self.depth_scale
+        depth_frame,color_frame = self.get_depth_and_color(frameset)
+        processed_image = self.process_frame(depth_frame,color_frame)
         
+        return processed_image

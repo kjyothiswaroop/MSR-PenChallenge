@@ -13,9 +13,9 @@ class toolBar:
 
         # Initialize values dict
         self.values = {
-            "H_min": 125, "S_min": 50, "V_min": 50,
-            "H_max": 155, "S_max": 255, "V_max": 255,
-            "Clipping_Distance": 1
+            "H_min": 110, "S_min": 50, "V_min": 50,
+            "H_max": 175, "S_max": 255, "V_max": 255,
+            "Clipping_Distance": 8
         }
 
         # Create trackbars
