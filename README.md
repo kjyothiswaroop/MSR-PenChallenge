@@ -71,7 +71,7 @@ MSR-PenChallenge/
 ![Video](videos/centroid.gif)
 
 * Click on the image below to watch the demo on Youtube:
-[![Video](videos/penDemo.JPG)](https://youtube.com/shorts/IgKwhFp3g9s)
+[![Video](videos/penDemo.jpg)](https://youtube.com/shorts/IgKwhFp3g9s)
 
 ### Author
 [Kasina Jyothi Swaroop](https://github.com/kjyothiswaroop)
