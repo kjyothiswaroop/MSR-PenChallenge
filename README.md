@@ -68,8 +68,10 @@ MSR-PenChallenge/
     
 ### Demos
 *Below is the demo of the video stream processing and locating the center of the pen
-  ![Video](videos/centroid.gif)
+![Video](videos/centroid.gif)
+
 *This is the demo of the robot picking up the pen
+![Video](videos/penDemo.mp4)
 
 ### Author
 [Kasina Jyothi Swaroop](https://github.com/kjyothiswaroop)
