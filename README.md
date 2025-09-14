@@ -66,12 +66,12 @@ MSR-PenChallenge/
       ```bash
       ./main.py --pickPen=true
     
-### Demos
+### Demos :
 *Below is the demo of the video stream processing and locating the center of the pen
 ![Video](videos/centroid.gif)
 
 *This is the demo of the robot picking up the pen
-![Video](videos/penDemo.mp4)
+[![Video](videos/centroid.gif)](https://youtube.com/shorts/IgKwhFp3g9s)
 
 ### Author
 [Kasina Jyothi Swaroop](https://github.com/kjyothiswaroop)
