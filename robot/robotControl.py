@@ -23,6 +23,8 @@ class Robot:
 
     def moveRobot(self,pose):
         x,y,z = pose
+        theta = np.arctan2(y,x)
+        self.rotateJoint("waist",theta)
         self.robot.arm.set_ee_pose_components(x,y,z+0.02)
     
     def moveRobotCylindrical(self,pose):
