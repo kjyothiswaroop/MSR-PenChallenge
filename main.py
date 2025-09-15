@@ -35,7 +35,7 @@ def main():
 
     windowName = "Realsense Stream"
     cv2.namedWindow(windowName)
-    cv2.waitKey(1)
+    # cv2.waitKey(1)
 
     tools = toolbar.toolBar(windowName)
     
@@ -86,7 +86,7 @@ def main():
                     img_proc = streamerObj.procImage()
                     cv2.imshow(windowName, img_proc)
                     print("Showing preview... press Enter in the terminal to continue.")
-                    cv2.waitKey(1)   # ensure it actually paints
+                    # cv2.waitKey(1)   # ensure it actually paints
                     input() 
 
                     current_centroid = streamerObj.getCentroid()
@@ -95,7 +95,8 @@ def main():
                     if current3DCentroid != (0,0,0):
                         q_Cords = np.dot(Rot,np.array(current3DCentroid)) + translate
                         print(q_Cords)
-
+                        # cylin_cords = robotArm.calculateCylindricalCords(q_Cords)
+                        # robotArm.pickPen(cylin_cords)
                         robotArm.pickPen(q_Cords)
                         time.sleep(0.1)
                     else :
