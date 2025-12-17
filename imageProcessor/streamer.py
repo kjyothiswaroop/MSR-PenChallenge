@@ -60,7 +60,7 @@ class Streamer:
                 if self.get3Dcords():
                     self.X,self.Y,self.Z = self.get3Dcords()
 
-                    cv2.putText(converted_img, f"({self.X}, {self.Y},{self.Z})", (c_x + 10, c_y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+                    cv2.putText(converted_img, f"({round(self.X,3)}, {round(self.Y,3)},{round(self.Z,3)})", (c_x + 10, c_y - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
         else :
             self.X , self.Y , self.Z = (0,0,0)
 
